@@ -50,4 +50,3 @@ def fetch(url_):
 
 
 fetch(start_url)
-
