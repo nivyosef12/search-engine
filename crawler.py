@@ -9,8 +9,6 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
 start_url = 'https://stackoverflow.com/questions/'
-
-
 # start_url = 'https://en.wikipedia.org/wiki/Main_Page'
 
 
@@ -42,7 +40,7 @@ class Crawler:
 
         content = BeautifulSoup(response.text, "html.parser")  # parse response
 
-        # rty to get title and description
+        # try to get title and description
         try:
             title = content.find('title').text
             description = ''
