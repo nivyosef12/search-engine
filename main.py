@@ -1,4 +1,5 @@
 import crawler as cr
+import API as api
 import os
 import pymongo
 # import dnspython
@@ -20,10 +21,11 @@ def main():
         print("ERROR, failed to connect to database")
         return
 
-    crawler = cr.Crawler(collection)
-    crawler.crawl(start_url, 1, set())
-    crawler.to_string()
-
+    # crawler = cr.Crawler(collection)
+    # crawler.crawl(start_url, 1, set())
+    # crawler.to_string()
+    # app_interface = api.API(collection)
+    # app_interface.run()
     client.close()
 
 
