@@ -8,22 +8,11 @@ import os
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
-start_url = 'https://stackoverflow.com/questions/'
-# start_url = 'https://en.wikipedia.org/wiki/Main_Page'
-
 
 class Crawler:
 
-    def __init__(self):
-        db_user = os.environ.get('DB_USER')
-        db_password = os.environ.get('DB_PASSWORD')
-        conn_str = "mongodb+srv://" + str(db_user) + ":" + str(db_password) + "@cluster0.xb6fgqb.mongodb.net/?retryWrites=true&w=majority"
-        try:
-            self.client = pymongo.MongoClient(conn_str)
-        except:
-            print("ERROR, failed to connect to database")
-        self.db = self.client["search_engine"]
-        self.collection = self.db["search_results"]
+    def __init__(self, collection):
+        self.collection = collection
         self.text_tags = ['p']  # paragraph
         self.data = []
 
@@ -93,7 +82,6 @@ class Crawler:
                 print("ERROR, couldn't parse url: %s\n" % url)
                 pass
 
-        self.client.close()
         return
 
     def to_string(self):
@@ -102,8 +90,16 @@ class Crawler:
         print(len(self.data))
 
 
-crawler = Crawler()
-crawler.crawl(start_url, 1, set())
-crawler.to_string()
 
+'''
 
+        db_user = os.environ.get('DB_USER')
+        db_password = os.environ.get('DB_PASSWORD')
+        conn_str = "mongodb+srv://" + str(db_user) + ":" + str(db_password) + "@cluster0.xb6fgqb.mongodb.net/?retryWrites=true&w=majority"
+        try:
+            self.client = pymongo.MongoClient(conn_str)
+        except:
+            print("ERROR, failed to connect to database")
+        self.db = self.client["search_engine"]
+
+'''
