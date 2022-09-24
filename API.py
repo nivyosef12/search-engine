@@ -1,12 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from starlette.templating import Jinja2Templates
 import uvicorn
 
+templates = Jinja2Templates(directory="templates")
 app = FastAPI()
 
 
 @app.get("/")
-def home():
-    return {"???/": "!!!/"}
+def home(request: Request):
+    return templates.TemplateResponse("base.html", {"request": request})
 
 
 uvicorn.run(app, host="127.0.0.1", port=8000)
