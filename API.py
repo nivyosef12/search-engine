@@ -1,5 +1,6 @@
 # TODO
 # 1.wrap API in class
+# 2.get a db reference
 
 from fastapi import FastAPI, Request, Form, status
 from starlette.responses import RedirectResponse
