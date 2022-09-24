@@ -1,3 +1,7 @@
+# TODO
+# 1.wrap crawler and API in threads
+# 2.wait for threads to terminate before closing the db connection
+
 import crawler as cr
 import API as api
 import os

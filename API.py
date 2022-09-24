@@ -1,3 +1,6 @@
+# TODO
+# 1.wrap API in class
+
 from fastapi import FastAPI, Request, Form, status
 from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
