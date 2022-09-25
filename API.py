@@ -1,5 +1,6 @@
 # TODO
 # 1.deal with empty str on search bar
+# 2.deal with 0 matches from search
 
 from fastapi import FastAPI, Request, Form, status
 from starlette.responses import RedirectResponse
@@ -25,16 +26,16 @@ def home(request: Request):
 
 
 @app.post("/search_results")
-def search(request: Request, title: str = Form(...)):
+def search(request: Request, search_bar: str = Form(...)):
     search_results = []
-    for x in collection.find({'$text': {'$search': title}}):
+    for x in collection.find({'$text': {'$search': search_bar}}):
         result = {
             'url': x['url'],
             'title': x['title'],
             'description': x['description']
         }
         search_results.append(result)
-    if len(search_results) == 0 or title == '':  # TODO 1
+    if len(search_results) == 0 or search_bar == '':  # TODO 1
         url = app.url_path_for("home")
         return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)  # changing from post route to get route
     context = {"request": request, "search_results": search_results}
