@@ -11,8 +11,8 @@ from urllib.parse import urlparse
 
 class Crawler:
 
-    def __init__(self, collection):
-        self.collection = collection
+    def __init__(self, mongo_client):
+        self.collection = mongo_client["search_engine"]["search_results"]  # [db][collection]
         self.text_tags = ['p']  # paragraph
         self.data = []
 
