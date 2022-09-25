@@ -25,9 +25,11 @@ def home(request: Request):
     return templates.TemplateResponse("base.html", {"request": request})
 
 
-@app.post("/search")
+@app.post("/search_results")
 def search(request: Request, title: str = Form(...)):
     print(title)
+    for x in collection.find({'$text': {'$search': title}}):
+        print(x)
     url = app.url_path_for("home")
     return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)  # changing from post route to get route
 
