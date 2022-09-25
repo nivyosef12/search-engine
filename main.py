@@ -4,8 +4,6 @@
 
 import crawler as cr
 import API as api
-import os
-import pymongo
 import uvicorn
 from database import get_db_client_connection
 
@@ -19,8 +17,8 @@ except ConnectionError:
 
 
 if __name__ == "__main__":
-    crawler = cr.Crawler(client)
-    crawler.crawl(start_url, 1, set())
-    uvicorn.run("API:app", host="127.0.0.1", port=8000, reload=True)
+    # crawler = cr.Crawler(client)
+    # crawler.crawl(start_url, 1, set())
+    # uvicorn.run("API:app", host="127.0.0.1", port=8000, reload=True)
+    client["search_engine"]["search_results"].delete_many({})
     client.close()
-    print("zzz")

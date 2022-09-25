@@ -1,10 +1,8 @@
 #
 # web crawler
 #
-import json
 import requests
 import pymongo
-import os
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
@@ -17,7 +15,7 @@ class Crawler:
         self.data = []
 
     def crawl(self, url, depth, visited_urls):
-        if url in visited_urls or len(self.data) > 5:
+        if url in visited_urls or len(self.data) > 4:
             return
         visited_urls.add(url)  # should be global var??
         try:
