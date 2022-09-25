@@ -1,6 +1,5 @@
 # TODO
-# 1.wrap API in class
-# 2.get a db reference
+# 1.deal with empty str on search bar
 
 from fastapi import FastAPI, Request, Form, status
 from starlette.responses import RedirectResponse
@@ -27,11 +26,19 @@ def home(request: Request):
 
 @app.post("/search_results")
 def search(request: Request, title: str = Form(...)):
-    print(title)
+    search_results = []
     for x in collection.find({'$text': {'$search': title}}):
-        print(x)
-    url = app.url_path_for("home")
-    return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)  # changing from post route to get route
+        result = {
+            'url': x['url'],
+            'title': x['title'],
+            'description': x['description']
+        }
+        search_results.append(result)
+    if len(search_results) == 0 or title == '':  # TODO 1
+        url = app.url_path_for("home")
+        return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)  # changing from post route to get route
+    context = {"request": request, "search_results": search_results}
+    return templates.TemplateResponse("base.html", context)
 
 
 # uvicorn.run(app, host="127.0.0.1", port=8000)

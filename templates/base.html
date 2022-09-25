@@ -7,7 +7,7 @@
 </head>
 <body>
     <center>
-        <div style="margin-top: 50px;" class="ui container">
+        <div style="margin-top: 20px;" class="ui container">
             <h1 class="ui center aligned header">Niv search engine</h1>
 
             <form class="ui form" action="/search_results" method="post">
@@ -15,8 +15,20 @@
                     <input type="text" name="title" placeholder="Search"><br>
                 </div>
                 <button class="ui blue button" type="submit">search</button>
+
             </form>
         </div>
     </center>
+    {% for result in search_results %}
+        <div class="col mt-3">
+            <div class="col">
+                <strong><a href="{{ result.url }}">{{ result.title }}</a> </strong>
+            </div>
+            <div class="col">
+                <a href="{{ result.url }}">{{ result.url }}</a>
+                <p>{{ result.title }}</p>
+            </div>
+        </div>
+    {% endfor %}
 </body>
 </html>
