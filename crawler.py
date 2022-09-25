@@ -1,3 +1,6 @@
+# TODO
+# 1. crawl to "better" urls
+
 #
 # web crawler
 #
@@ -15,7 +18,7 @@ class Crawler:
         self.data = []
 
     def crawl(self, url, depth, visited_urls):
-        if url in visited_urls or len(self.data) > 4:
+        if url in visited_urls or len(self.data) > 100:
             return
         visited_urls.add(url)  # should be global var??
         try:
