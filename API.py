@@ -23,6 +23,6 @@ def search(request: Request, title: str = Form(...)):
     return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)  # changing from post route to get route
 
 
-uvicorn.run(app, host="127.0.0.1", port=8000)
+# uvicorn.run(app, host="127.0.0.1", port=8000)
 
 

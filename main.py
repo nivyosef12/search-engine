@@ -6,7 +6,7 @@ import crawler as cr
 import API as api
 import os
 import pymongo
-
+import uvicorn
 
 start_url = 'https://stackoverflow.com/questions/'
 # start_url = 'https://en.wikipedia.org/wiki/Main_Page'
@@ -24,10 +24,13 @@ except:
     print("ERROR, failed to connect to database")
     exit(1)
 
-crawler = cr.Crawler(client)
-crawler.crawl(start_url, 1, set())
-crawler.to_string()
+# crawler = cr.Crawler(client)
+# crawler.crawl(start_url, 1, set())
+# crawler.to_string()
 # app_interface = api.API(collection)
 # app_interface.run()
 client.close()
 print("done")
+
+if __name__ == "__main__":
+    uvicorn.run("API:app", host="127.0.0.1", port=8000, reload=True)
