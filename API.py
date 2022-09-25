@@ -5,10 +5,20 @@
 from fastapi import FastAPI, Request, Form, status
 from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
+from database import get_db_client_connection
 import uvicorn
 
 templates = Jinja2Templates(directory="templates")
 app = FastAPI()
+
+try:
+    client = get_db_client_connection()
+except ConnectionError:
+    print("ERROR, failed to connect to database")
+    # client = None
+    exit(1)
+
+collection = client["search_engine"]["search_results"]
 
 
 @app.get("/")
