@@ -1,5 +1,6 @@
 # TODO
 # 1. crawl to "better" urls
+# 2. thoughts about using multi threaded concepts, and have couple of crawlers crawling through the internet
 
 #
 # web crawler
