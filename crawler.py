@@ -1,6 +1,7 @@
 # TODO
 # 1. thoughts about using multi threaded concepts, and have couple of crawlers crawling through the internet
 # 2. thoughts about separating indexes [title, description]
+# 3. instead of visited_urls maybe check if 'title' is in the database already
 
 #
 # web crawler
@@ -53,8 +54,7 @@ class Crawler:
         self.collection.insert_one(result)
         # create index for efficient search query
         self.collection.create_index([
-            ('title', pymongo.TEXT),
-            ('description', pymongo.TEXT)],
+            ('title', pymongo.TEXT)],
             name='search_results', default_language='english')
 
         # don't extract links when depth == 0
@@ -74,6 +74,7 @@ class Crawler:
     # extract all links in the current page
     def get_links(self, content, url):
         for link in content.findAll('a'):
+            # TODO handle # urls
             path = link.get('href')
             if path and path.startswith('/'):
                 path = urljoin(url, path)
@@ -87,10 +88,11 @@ class Crawler:
 
 '''
 
-SEARCHING ONLY BY TITLE
+SEARCHING BY TITLE and DESCRIPTION
 
-self.collection.create_index([
-            ('title', pymongo.TEXT)],
+        self.collection.create_index([
+            ('title', pymongo.TEXT),
+            ('description', pymongo.TEXT)],
             name='search_results', default_language='english')
 
 '''

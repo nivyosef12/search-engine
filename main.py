@@ -19,7 +19,7 @@ except ConnectionError:
 
 if __name__ == "__main__":
     crawler = cr.Crawler(client)
-    crawler_thread = threading.Thread(target=crawler.crawl, args=(start_url, 3, set()))
+    crawler_thread = threading.Thread(target=crawler.crawl, args=(start_url, 5, set()))
     crawler_thread.start()
     uvicorn.run("API:app", host="127.0.0.1", port=8000, reload=False)
     crawler_thread.join()
