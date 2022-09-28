@@ -25,14 +25,13 @@
     {% endif %}
 
     {% for result in search_results %}
-        <div class="col mt-3">
-            <div class="col">
-                <strong><a href="{{ result.url }}">{{ result.title }}</a> </strong>
-            </div>
-            <div class="col">
-                <a href="{{ result.url }}">{{ result.url }}</a>
-                <p>{{ result.title }}</p>
-            </div>
+        <div class="col">
+            <strong><a href="{{ result.url }}">{{ result.title }}</a> </strong>
+        </div>
+        <div class="col">
+            <a href="{{ result.url }}">{{ result.url }}</a>
+            <!-- what if len(result.description) < 200 ? -->
+            <p>{{ result.description[:200] }}...</p>
         </div>
     {% endfor %}
 </body>

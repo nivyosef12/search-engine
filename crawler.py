@@ -1,7 +1,6 @@
 # TODO
-# 1. crawl to "better" urls
-# 2. thoughts about using multi threaded concepts, and have couple of crawlers crawling through the internet
-# 3. exclude class=image links ??
+# 1. thoughts about using multi threaded concepts, and have couple of crawlers crawling through the internet
+# 2. thoughts about separating indexes [title, description]
 
 #
 # web crawler
@@ -52,8 +51,8 @@ class Crawler:
 
         # insets information to database
         self.collection.insert_one(result)
+        # create index for efficient search query
         self.collection.create_index([
-            ('url', pymongo.TEXT),
             ('title', pymongo.TEXT),
             ('description', pymongo.TEXT)],
             name='search_results', default_language='english')
@@ -86,5 +85,13 @@ class Crawler:
         print(len(self.data))
 
 
-# self.data.append(result) -  or len(self.data) > 100
+'''
+
+SEARCHING ONLY BY TITLE
+
+self.collection.create_index([
+            ('title', pymongo.TEXT)],
+            name='search_results', default_language='english')
+
+'''
 
