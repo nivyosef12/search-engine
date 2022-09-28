@@ -36,10 +36,7 @@ def search(request: Request, search_bar: str = Form(...)):
             'description': x['description']
         }
         search_results.append(result)
-    if len(search_results) == 0 or search_bar == '':  # TODO 1
-        url = app.url_path_for("home")
-        return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)  # changing from post route to get route
-    context = {"request": request, "search_results": search_results}
+    context = {"request": request, "search_results": search_results, "num_of_results": len(search_results)}
     return templates.TemplateResponse("base.html", context)
 
 

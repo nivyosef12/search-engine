@@ -20,6 +20,10 @@
             </form>
         </div>
     </center>
+    {% if num_of_results == 0 %}
+        <strong>No results</strong>
+    {% endif %}
+
     {% for result in search_results %}
         <div class="col mt-3">
             <div class="col">
