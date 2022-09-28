@@ -1,6 +1,7 @@
 # TODO
 # 1. crawl to "better" urls
 # 2. thoughts about using multi threaded concepts, and have couple of crawlers crawling through the internet
+# 3. exclude class=image links ??
 
 #
 # web crawler
@@ -74,7 +75,7 @@ class Crawler:
                 elif href[0:2] == './':
                     href = url_parse.scheme + "://" + url_parse.netloc + url_parse.path + href[1:]
                 elif href[0:1] == '#':
-                    href = url_parse.scheme + "://" + url_parse.netloc + url_parse.path + href
+                    continue
                 elif href[0:3] == '../':
                     href = url_parse.scheme + "://" + url_parse.netloc + "/" + href
                 elif href[0:11] == 'javascript:':

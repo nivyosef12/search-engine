@@ -1,6 +1,7 @@
 # TODO
 # 1.deal with empty str on search bar
 # 2.deal with 0 matches from search
+# 3.search only by title?
 
 from fastapi import FastAPI, Request, Form, status
 from starlette.responses import RedirectResponse
