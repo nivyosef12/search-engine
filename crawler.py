@@ -17,7 +17,6 @@ class Crawler:
     def __init__(self, mongo_client):
         self.collection = mongo_client["search_engine"]["search_results"]  # [db][collection]
         self.text_tags = ['p']  # paragraph
-        self.data = []
 
     def crawl(self, url, depth, visited_urls):
         if depth < 0 or url in visited_urls:
@@ -79,11 +78,6 @@ class Crawler:
             if path and path.startswith('/'):
                 path = urljoin(url, path)
             yield path
-
-    def to_string(self):
-        for dat in self.data:
-            print(dat['title'], "\n\n", dat['url'], "\n\n", dat['description'], "\n\n")
-        print(len(self.data))
 
 
 '''
