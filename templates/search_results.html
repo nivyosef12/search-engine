@@ -20,6 +20,20 @@
             </form>
         </div>
     </center>
+    {% if num_of_results == 0 %}
+        <strong>No results, </strong>
+    {% endif %}
 
+    {% for result in search_results %}
+        <div class="col">
+            <strong><a href="{{ result.url }}">{{ result.title }}</a> </strong>
+        </div>
+        <div class="col">
+            <a href="{{ result.url }}">{{ result.url }}</a>
+            <p>{{ result.description[:200] }}...</p>
+        </div>
+    {% endfor %}
+
+    <strong>found {{ num_of_results }} matches</strong>
 </body>
 </html>
