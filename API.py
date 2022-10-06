@@ -1,7 +1,5 @@
 # TODO
 # 1.deal with empty str on search bar
-# 2.deal with 0 matches from search
-# 3.search only by title?
 
 from fastapi import FastAPI, Request, Form, status
 from starlette.responses import RedirectResponse
@@ -38,7 +36,7 @@ def search(request: Request, search_bar: str = Form(...), page_num: int = 1, pag
         search_results.append(result)
     start = (page_num - 1) * page_size
     end = start + page_size
-    context = {"request": request, "search_results": search_results[start:end], "num_of_results": len(search_results)}
+    context = {"request": request, "search_results": search_results, "num_of_results": len(search_results)}
     return templates.TemplateResponse("search_results.html", context)
 
 # if len(search_results) == 0 or search_bar == '':

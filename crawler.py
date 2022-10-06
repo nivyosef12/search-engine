@@ -1,7 +1,6 @@
 # TODO
 # 1. thoughts about using multi threaded concepts, and have couple of crawlers crawling through the internet
-# 2. thoughts about separating indexes [title, description]
-# 3. instead of visited_urls maybe check if 'title' is in the database already
+# 2. instead of visited_urls maybe check if 'title' is in the database already
 
 #
 # web crawler
