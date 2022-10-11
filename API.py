@@ -25,7 +25,7 @@ def home(request: Request):
 
 
 @app.post("/search_results")
-def search(request: Request, search_bar: str = Form(...), page_num: int = 1, page_size:int = 10):
+def search(request: Request, search_bar: str = Form(...)):
     search_results = []
     for x in collection.find({'$text': {'$search': search_bar}}):
         result = {
@@ -34,8 +34,6 @@ def search(request: Request, search_bar: str = Form(...), page_num: int = 1, pag
             'description': x['description']
         }
         search_results.append(result)
-    start = (page_num - 1) * page_size
-    end = start + page_size
     context = {"request": request, "search_results": search_results, "num_of_results": len(search_results)}
     return templates.TemplateResponse("search_results.html", context)
 

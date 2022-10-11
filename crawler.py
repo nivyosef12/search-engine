@@ -1,5 +1,5 @@
 # TODO
-# 1. thoughts about using multi threaded concepts, and have couple of crawlers crawling through the internet
+# 1. thoughts about using multi threaded crawler, and have couple of crawlers crawling through the internet
 # 2. instead of visited_urls maybe check if 'title' is in the database already
 
 #
@@ -62,9 +62,7 @@ class Crawler:
         for link in self.get_links(content, url):
             try:
                 self.crawl(link, depth - 1, visited_urls)
-            except Exception as e:
-                print("exception is")
-                print(e)
+            except:
                 print("ERROR, couldn't crawl url: %s\n" % url)
                 pass
         return
@@ -72,7 +70,6 @@ class Crawler:
     # extract all links in the current page
     def get_links(self, content, url):
         for link in content.findAll('a'):
-            # TODO handle # urls
             path = link.get('href')
             if path and path.startswith('/'):
                 path = urljoin(url, path)

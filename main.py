@@ -1,7 +1,6 @@
 # TODO
 # 1.wait for threads to terminate before closing the db connection
-# 2.indexing
-# 3.ranking
+# 2.ranking
 
 import crawler as cr
 import uvicorn
