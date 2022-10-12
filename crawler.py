@@ -7,6 +7,8 @@
 #
 # web crawler
 #
+import threading
+
 import requests
 import pymongo
 from bs4 import BeautifulSoup
@@ -18,11 +20,16 @@ class Crawler:
     def __init__(self, mongo_client):
         self.collection = mongo_client["search_engine"]["search_results"]  # [db][collection]
         self.text_tags = ['p']  # paragraph
+        self.visited_urls = set()  # shared resource
+        self.lock = threading.Lock()
 
-    def crawl(self, url, depth, visited_urls):
-        if depth < 0 or url in visited_urls:
+    def crawl(self, url, depth):
+        self.lock.acquire()
+        if depth < 0 or url in self.visited_urls:
+            self.lock.release()  # TODO check if necessary
             return
-        visited_urls.add(url)
+        self.visited_urls.add(url)
+        self.lock.release()
         try:
             response = requests.get(url)  # get the url web page
             print('crawling url: %s, at depth %d\n' % (url, depth))
@@ -50,6 +57,7 @@ class Crawler:
             'description': description
         }
         print(title)
+        # TODO need to lock?
         # insets information to database
         # self.collection.insert_one(result)
         # create index for efficient search query
@@ -63,7 +71,7 @@ class Crawler:
 
         for link in self.get_links(content, url):
             try:
-                self.crawl(link, depth - 1, visited_urls)
+                self.crawl(link, depth - 1)
             except:
                 print("ERROR, couldn't crawl url: %s\n" % url)
                 pass
