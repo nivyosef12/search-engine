@@ -1,6 +1,8 @@
 # TODO
 # 1. thoughts about using multi threaded crawler, and have couple of crawlers crawling through the internet
 # 2. instead of visited_urls maybe check if 'title' is in the database already
+# 3. do not insert "cannot find" and etc web pages
+# 4. check if title is in english - reg exp
 
 #
 # web crawler
@@ -47,13 +49,13 @@ class Crawler:
             'title': title,
             'description': description
         }
-
+        print(title)
         # insets information to database
-        self.collection.insert_one(result)
+        # self.collection.insert_one(result)
         # create index for efficient search query
-        self.collection.create_index([
-            ('title', pymongo.TEXT)],
-            name='search_results', default_language='english')
+        # self.collection.create_index([
+        #    ('title', pymongo.TEXT)],
+        #    name='search_results', default_language='english')
 
         # don't extract links when depth == 0
         if depth == 0:

@@ -7,8 +7,8 @@ import uvicorn
 import threading
 from database import get_db_client_connection
 
-# start_url = 'https://stackoverflow.com/questions/'
-start_url = 'https://en.wikipedia.org/wiki/Web_crawler'
+start_url = 'https://www.imdb.com/'
+# start_url = 'https://en.wikipedia.org/wiki/Web_crawler'
 try:
     client = get_db_client_connection()
 except ConnectionError:
@@ -17,10 +17,10 @@ except ConnectionError:
 
 
 if __name__ == "__main__":
-    # crawler = cr.Crawler(client)
-    # crawler_thread = threading.Thread(target=crawler.crawl, args=(start_url, 5, set()))
-    # crawler_thread.start()
-    uvicorn.run("API:app", host="127.0.0.1", port=8000, reload=False)
-    # crawler_thread.join()
+    crawler = cr.Crawler(client)
+    crawler_thread = threading.Thread(target=crawler.crawl, args=(start_url, 5, set()))
+    crawler_thread.start()
+    # uvicorn.run("API:app", host="127.0.0.1", port=8000, reload=False)
+    crawler_thread.join()
     # client["search_engine"]["search_results"].delete_many({})
     client.close()
