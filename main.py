@@ -20,6 +20,7 @@ except ConnectionError:
 
 
 if __name__ == "__main__":
+
     crawler = cr.Crawler(client)
     crawler_thread1 = threading.Thread(target=crawler.crawl, args=(start_url1, 5))
     crawler_thread2 = threading.Thread(target=crawler.crawl, args=(start_url2, 5))
@@ -33,5 +34,9 @@ if __name__ == "__main__":
     crawler_thread1.join()
     crawler_thread2.join()
     crawler_thread3.join()
+
     # client["search_engine"]["search_results"].delete_many({})
     client.close()
+
+
+

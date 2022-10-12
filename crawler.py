@@ -13,7 +13,7 @@ import requests
 import pymongo
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
-
+import re
 
 class Crawler:
 
@@ -22,6 +22,7 @@ class Crawler:
         self.text_tags = ['p']  # paragraph
         self.visited_urls = set()  # shared resource
         self.lock = threading.Lock()
+        self.pattern = "^[a-zA-Z0-9@#&*()—'?|/\:!,.\s-]+$"
 
     def crawl(self, url, depth):
         self.lock.acquire()
@@ -32,7 +33,7 @@ class Crawler:
         self.lock.release()
         try:
             response = requests.get(url)  # get the url web page
-            print('crawling url: %s, at depth %d\n' % (url, depth))
+            print('crawling url: %s, at depth %d' % (url, depth))
         except:
             print('ERROR, failed to preform requests.get(%s)' % url)
             return
@@ -41,7 +42,8 @@ class Crawler:
         # try to get title and description
         try:
             title = content.find('title').text
-            if title == "404 Not Found" or title == "403 Forbidden":
+            if title == "404 Not Found" or title == "403 Forbidden" or not re.search(self.pattern, title):
+                print("!!!! NOT ENG !!!! ", title)
                 return
             description = ''
             for tag in content.findAll():
@@ -56,14 +58,14 @@ class Crawler:
             'title': title,
             'description': description
         }
-        print(title)
+        print(title, "\n")
         # TODO need to lock?
         # insets information to database
-        # self.collection.insert_one(result)
+        self.collection.insert_one(result)
         # create index for efficient search query
-        # self.collection.create_index([
-        #    ('title', pymongo.TEXT)],
-        #    name='search_results', default_language='english')
+        self.collection.create_index([
+            ('title', pymongo.TEXT)],
+            name='search_results', default_language='english')
 
         # don't extract links when depth == 0
         if depth == 0:
