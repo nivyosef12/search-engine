@@ -3,10 +3,10 @@
 # 2.ranking
 # 3.list of links or different threads?
 
-import crawler as cr
+import crawler.crawler as cr
 import uvicorn
 import threading
-from database import get_db_client_connection
+from database.database import get_db_client_connection
 
 start_url1 = 'https://en.wikipedia.org/wiki/Sport'
 start_url2 = 'https://en.wikipedia.org/wiki/Google'

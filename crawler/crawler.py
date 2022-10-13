@@ -3,7 +3,7 @@
 # 2. instead of visited_urls maybe check if 'title' is in the database already
 # 3. do not insert "cannot find" and etc web pages
 # 4. check if title is in english - reg exp
-
+# 5. implementing a queue that insertrs to database
 #
 # web crawler
 #
@@ -15,8 +15,8 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import re
 
-class Crawler:
 
+class Crawler:
     def __init__(self, mongo_client):
         self.collection = mongo_client["search_engine"]["search_results"]  # [db][collection]
         self.text_tags = ['p']  # paragraph
@@ -25,12 +25,8 @@ class Crawler:
         self.pattern = "^[a-zA-Z0-9@#&*()—'?|/\:!,.\s-]+$"
 
     def crawl(self, url, depth):
-        self.lock.acquire()
-        if depth < 0 or url in self.visited_urls:
-            self.lock.release()  # TODO check if necessary
+        if depth < 0:
             return
-        self.visited_urls.add(url)
-        self.lock.release()
         try:
             response = requests.get(url)  # get the url web page
             print('crawling url: %s, at depth %d' % (url, depth))
@@ -42,9 +38,19 @@ class Crawler:
         # try to get title and description
         try:
             title = content.find('title').text
+
+            self.lock.acquire()
+            if title in self.visited_urls:
+                print("!!!! VISITED !!!! ", title)
+                self.lock.release()  # TODO check if necessary
+                return
+            self.visited_urls.add(title)
+            self.lock.release()
+
             if title == "404 Not Found" or title == "403 Forbidden" or not re.search(self.pattern, title):
                 print("!!!! NOT ENG !!!! ", title)
                 return
+
             description = ''
             for tag in content.findAll():
                 if tag.name in self.text_tags:

@@ -4,7 +4,7 @@
 from fastapi import FastAPI, Request, Form, status
 from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
-from database import get_db_client_connection
+from database.database import get_db_client_connection
 
 templates = Jinja2Templates(directory="templates")
 app = FastAPI()
