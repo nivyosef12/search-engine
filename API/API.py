@@ -6,7 +6,7 @@ from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
 from database.database import get_db_client_connection
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="../templates")
 app = FastAPI()
 
 try:
