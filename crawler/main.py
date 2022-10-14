@@ -8,21 +8,22 @@ from database.handleQueue import handleQueue
 import threading
 from database.database import get_db_client_connection
 
-start_url1 = 'https://en.wikipedia.org/wiki/Sport'
-start_url2 = 'https://en.wikipedia.org/wiki/Google'
-start_url3 = 'https://www.imdb.com/'
 
-try:
-    client = get_db_client_connection()
-except ConnectionError:
-    print("ERROR, failed to connect to database")
-    exit(1)
+def main():
+    start_url1 = 'https://en.wikipedia.org/wiki/Sport'
+    start_url2 = 'https://en.wikipedia.org/wiki/Google'
+    start_url3 = 'https://www.imdb.com/'
 
+    try:
+        client = get_db_client_connection()
+    except ConnectionError:
+        print("ERROR, failed to connect to database")
+        exit(1)
 
-if __name__ == "__main__":
-    handleQueue = handleQueue(client)
-    crawler = cr.Crawler(handleQueue)
-    queue_thread = threading.Thread(target=handleQueue.insert_to_database, args=(), daemon=True)
+    handle_queue = handleQueue(client)
+    crawler = cr.Crawler(handle_queue)
+
+    queue_thread = threading.Thread(target=handle_queue.insert_to_database, args=(), daemon=True)
     crawler_thread1 = threading.Thread(target=crawler.crawl, args=(start_url1, 5))
     crawler_thread2 = threading.Thread(target=crawler.crawl, args=(start_url2, 5))
     crawler_thread3 = threading.Thread(target=crawler.crawl, args=(start_url3, 5))
@@ -41,4 +42,5 @@ if __name__ == "__main__":
     client.close()
 
 
-
+if __name__ == "__main__":
+    main()
