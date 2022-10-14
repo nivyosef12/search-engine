@@ -1,6 +1,6 @@
 # TODO list
 # 1.handle visited websites
-# 2. do not insert "cannot find" and etc web pages
+# 2.do not insert "cannot find" and etc web pages (404, 403, ...)
 
 from queue import Queue
 import pymongo
@@ -20,14 +20,16 @@ class handleQueue:
     def insert_to_database(self):
         while True:
             result = self.queue.get()  # if queue is empty, wait until an item is available
-            if result['title'] == "404 Not Found" or result['title'] == "403 Forbidden" or not re.search(self.pattern,
-                                                                                                         result[
-                                                                                                             'title']):
+
+            # ignore non English web pages
+            if not re.search(self.pattern, result['title']):
                 print("!!!! NOT ENG !!!! ", result['title'])
                 continue
             print("Insterted ", result['title'])
+
             # insets information to database
             self.collection.insert_one(result)
+
             # create index for efficient search query
             self.collection.create_index([
                 ('title', pymongo.TEXT)],
