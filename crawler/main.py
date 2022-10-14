@@ -1,8 +1,3 @@
-# TODO
-# 1.wait for threads to terminate before closing the db connection
-# 2.ranking
-# 3.list of links or different threads?
-
 import crawler as cr
 from database.handleQueue import handleQueue
 import threading

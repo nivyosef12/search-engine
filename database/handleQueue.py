@@ -1,5 +1,6 @@
 # TODO list
 # 1.handle visited websites
+# 2. do not insert "cannot find" and etc web pages
 
 from queue import Queue
 import pymongo

@@ -1,10 +1,3 @@
-# TODO
-# 1. thoughts about using multi threaded crawler, and have couple of crawlers crawling through the internet
-# 2. instead of visited_urls maybe check if 'title' is in the database already
-# 3. do not insert "cannot find" and etc web pages
-# 4. check if title is in english - reg exp
-# 5. implementing a queue that insertrs to database
-
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
