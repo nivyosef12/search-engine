@@ -2,6 +2,7 @@ import crawler as cr
 from database.handleQueue import handleQueue
 import threading
 from database.database import get_db_client_connection
+from concurrent.futures import ThreadPoolExecutor
 
 
 def main():
@@ -17,7 +18,23 @@ def main():
 
     handle_queue = handleQueue(client)
     crawler = cr.Crawler(handle_queue)
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        # arguments = [[start_url1, 5], [start_url2, 5], [start_url3, 5]]
+        # executor.map(crawler.crawl, *arguments)
+        executor.submit(handle_queue.insert_to_database)
+        executor.submit(crawler.crawl, start_url1, 5)
+        executor.submit(crawler.crawl, start_url2, 5)
+        executor.submit(crawler.crawl, start_url3, 5)
 
+    print("before close")
+    client.close()
+    print("after close!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+
+if __name__ == "__main__":
+    main()
+
+    ''' 
     queue_thread = threading.Thread(target=handle_queue.insert_to_database, args=(), daemon=True)
     crawler_thread1 = threading.Thread(target=crawler.crawl, args=(start_url1, 5))
     crawler_thread2 = threading.Thread(target=crawler.crawl, args=(start_url2, 5))
@@ -32,10 +49,4 @@ def main():
     crawler_thread1.join()
     crawler_thread2.join()
     crawler_thread3.join()
-
-    # client["search_engine"]["search_results"].delete_many({})
-    client.close()
-
-
-if __name__ == "__main__":
-    main()
+    '''
