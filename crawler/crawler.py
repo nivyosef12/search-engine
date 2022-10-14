@@ -42,12 +42,10 @@ class Crawler:
         if depth == 0:
             return
 
+        # crawl recursively
         for link in self.get_links(content, url):
-            try:
-                self.crawl(link, depth - 1)
-            except:
-                print("ERROR, couldn't crawl url: %s\n" % url)
-                pass
+            self.crawl(link, depth - 1)
+
         return
 
     # extract all links in the current page
