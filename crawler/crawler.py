@@ -4,25 +4,16 @@
 # 3. do not insert "cannot find" and etc web pages
 # 4. check if title is in english - reg exp
 # 5. implementing a queue that insertrs to database
-#
-# web crawler
-#
-import threading
 
 import requests
-import pymongo
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
-import re
 
 
 class Crawler:
-    def __init__(self, mongo_client):
-        self.collection = mongo_client["search_engine"]["search_results"]  # [db][collection]
+    def __init__(self, handle_queue):
+        self.handle_queue = handle_queue
         self.text_tags = ['p']  # paragraph
-        self.visited_urls = set()  # shared resource
-        self.lock = threading.Lock()
-        self.pattern = "^[a-zA-Z0-9@#&*()—'?|/\:!,.\s-]+$"
 
     def crawl(self, url, depth):
         if depth < 0:
@@ -38,19 +29,6 @@ class Crawler:
         # try to get title and description
         try:
             title = content.find('title').text
-
-            self.lock.acquire()
-            if title in self.visited_urls:
-                print("!!!! VISITED !!!! ", title)
-                self.lock.release()  # TODO check if necessary
-                return
-            self.visited_urls.add(title)
-            self.lock.release()
-
-            if title == "404 Not Found" or title == "403 Forbidden" or not re.search(self.pattern, title):
-                print("!!!! NOT ENG !!!! ", title)
-                return
-
             description = ''
             for tag in content.findAll():
                 if tag.name in self.text_tags:
@@ -65,13 +43,7 @@ class Crawler:
             'description': description
         }
         print(title, "\n")
-        # TODO need to lock?
-        # insets information to database
-        self.collection.insert_one(result)
-        # create index for efficient search query
-        self.collection.create_index([
-            ('title', pymongo.TEXT)],
-            name='search_results', default_language='english')
+        self.handle_queue.add(result)
 
         # don't extract links when depth == 0
         if depth == 0:
