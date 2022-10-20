@@ -4,6 +4,7 @@ from database.database import get_db_client_connection
 
 def main():
     try:
+        # different connection from crawler?
         client = get_db_client_connection()
     except ConnectionError:
         print("ERROR, failed to connect to database")

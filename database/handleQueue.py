@@ -18,6 +18,11 @@ class handleQueue:
         self.queue.put(result)
 
     def insert_to_database(self):
+        # create index for efficient search query
+        self.collection.create_index([
+            ('title', pymongo.TEXT)],
+            name='search_results', default_language='english')
+
         while True:
             result = self.queue.get()  # if queue is empty, wait until an item is available
 
@@ -29,13 +34,10 @@ class handleQueue:
 
             # visited web page
             # TODO find better way to do that - something like cursor.size()
-            if len(list(self.collection.find({'$text': {'$search': result['title']}}))) != 0:
-                continue
+            # if len(list(self.collection.find({'$text': {'$search': result['title']}}))) != 0:
+            #    continue
 
             # insets information to database
             self.collection.insert_one(result)
 
-            # create index for efficient search query
-            self.collection.create_index([
-                ('title', pymongo.TEXT)],
-                name='search_results', default_language='english')
+
