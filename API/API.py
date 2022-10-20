@@ -1,5 +1,6 @@
 # TODO
 # 1.deal with empty str on search bar
+# 2.display related search results
 
 from fastapi import FastAPI, Request, Form, status
 from starlette.responses import RedirectResponse
