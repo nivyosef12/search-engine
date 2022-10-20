@@ -1,6 +1,7 @@
 # TODO list
 # 1.handle visited websites
 # 2.do not insert "cannot find" and etc web pages (404, 403, ...)
+# 3.thoughts about creating a 'description' index and searching there to while considering the ranking
 
 from queue import Queue
 import pymongo
@@ -25,12 +26,10 @@ class handleQueue:
 
         while True:
             result = self.queue.get()  # if queue is empty, wait until an item is available
-
             # ignore non English web pages
             if not re.search(self.pattern, result['title']):
                 print("!!!! NOT ENG !!!! ", result['title'])
                 continue
-            print("Insterted ", result['title'])
 
             # visited web page
             # TODO find better way to do that - something like cursor.size()
@@ -39,5 +38,6 @@ class handleQueue:
 
             # insets information to database
             self.collection.insert_one(result)
+            print("Inserted: ", result['title'])
 
 
