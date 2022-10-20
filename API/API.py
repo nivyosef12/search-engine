@@ -28,6 +28,14 @@ def home(request: Request):
 @app.post("/search_results")
 def search(request: Request, search_bar: str = Form(...)):
     search_results = []
+    '''
+    score based search results
+    y = sorted(list(collection.find({'$text': {'$search': search_bar}}, {'score': { '$meta':"textScore" }})),
+               key=lambda result: result['score'], reverse=True)
+    for yy in y:
+        print(yy['score'])
+    
+    '''
     for x in collection.find({'$text': {'$search': search_bar}}):
         result = {
             'url': x['url'],
