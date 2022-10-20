@@ -26,9 +26,7 @@ def main():
         executor.submit(crawler.crawl, start_url2, 5)
         executor.submit(crawler.crawl, start_url3, 5)
 
-    print("before close")
     client.close()
-    print("after close!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
 
 if __name__ == "__main__":
