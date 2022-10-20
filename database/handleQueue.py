@@ -27,6 +27,11 @@ class handleQueue:
                 continue
             print("Insterted ", result['title'])
 
+            # visited web page
+            # TODO find better way to do that - something like cursor.size()
+            if len(list(self.collection.find({'$text': {'$search': result['title']}}))) != 0:
+                continue
+
             # insets information to database
             self.collection.insert_one(result)
 
