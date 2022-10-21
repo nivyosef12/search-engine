@@ -13,9 +13,9 @@ class Crawler:
             return
         try:
             response = requests.get(url)  # get the url web page
-            print('crawling url: %s, at depth %d' % (url, depth))
+            print(f"crawling url: {url}, at depth {depth}\n")
         except:
-            print('ERROR, failed to preform requests.get(%s)' % url)
+            print(f"ERROR, failed to preform requests.get({url})\n")
             return
         content = BeautifulSoup(response.text, "html.parser")  # parse response
 
@@ -27,7 +27,7 @@ class Crawler:
                 if tag.name in self.text_tags:
                     description += tag.text.strip().replace('\n', '')
         except:
-            print("Couldn't extract content of ", url)
+            print(f"Couldn't extract content of {url}")
             return
 
         result = {
@@ -35,7 +35,6 @@ class Crawler:
             'title': title,
             'description': description
         }
-        print(title, "\n")
         self.handle_queue.add(result)
 
         # don't extract links when depth == 0
