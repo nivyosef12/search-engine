@@ -25,19 +25,23 @@ class handleQueue:
             name='search_results', default_language='english')
 
         while True:
+            revisited = False
             result = self.queue.get()  # if queue is empty, wait until an item is available
             # ignore non English web pages
             if not re.search(self.pattern, result['title']):
-                print("!!!! NOT ENG !!!! ", result['title'])
+                print(f"!!!! NOT ENG !!!! {result['title']}\n")
                 continue
 
             # visited web page
-            # TODO find better way to do that - something like cursor.size()
-            # if len(list(self.collection.find({'$text': {'$search': result['title']}}))) != 0:
-            #    continue
+            # TODO find better way to do that - something like cursor.count()
+            for x in self.collection.find({'$text': {'$search': f"\"{result['title']}\""}}):
+                revisited = True
 
             # insets information to database
-            self.collection.insert_one(result)
-            print("Inserted: ", result['title'])
+            if not revisited:
+                self.collection.insert_one(result)
+                print(f"Inserted: {result['title']}\n")
+            else:
+                print(f"Already visited in {result['url']}\n")
 
 
