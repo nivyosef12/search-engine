@@ -3,6 +3,7 @@ import pymongo
 
 db_user = os.environ.get('DB_USER')
 db_password = os.environ.get('DB_PASSWORD')
+print(f"{db_user} : {db_password}")
 conn_str = "mongodb+srv://" + str(db_user) + ":" + str(
     db_password) + "@cluster0.xb6fgqb.mongodb.net/?retryWrites=true&w=majority"
 try:

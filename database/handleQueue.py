@@ -12,7 +12,9 @@ class handleQueue:
     def __init__(self, mongo_client):
         self.queue = Queue(0)  # infinite size
         self.collection = mongo_client["search_engine"]["search_results"]  # [db][collection]
-        self.pattern = "^[a-zA-Z0-9@#&*()—'?|/\:!,.\s-]+$"
+        # self.pattern = "^[a-zA-Z0-9@#&*()—'?|/\:!,.\s-]+$"
+        self.pattern = r'^[a-zA-Z0-9@#&*()—\'?|/\:!,.\s-]*[a-zA-Z][a-zA-Z0-9@#&*()—\'?|/\:!,.\s-]*$'
+
 
     def add(self, result):
         print("Added ", result['title'])
